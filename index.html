@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nongkiw Shop - บริการรับดันแรงค์ 4v4</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #007bc4;
+            --secondary-blue: #00d2ff;
+            --dark-blue: #0a192f;
+            --card-bg: rgba(16, 33, 62, 0.85);
+            --text-color: #ffffff;
+            --text-dim: #a0aec0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Kanit', sans-serif;
+        }
+
+        body {
+            background-color: var(--dark-blue);
+            color: var(--text-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: linear-gradient(rgba(10, 25, 47, 0.85), rgba(10, 25, 47, 0.95)), url('about.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* Floating Background Animation */
+        #svg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .floating-svg {
+            position: absolute;
+            opacity: 0.3;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+
+        /* Splash Screen */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a192f 0%, #003366 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            transition: opacity 0.8s ease;
+        }
+
+        .splash-title {
+            font-size: 3rem;
+            font-weight: 600;
+            background: linear-gradient(45deg, var(--secondary-blue), #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(0, 210, 255, 0.5);
+        }
+
+        .splash-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            margin-bottom: 30px;
+        }
+
+        .btn-enter {
+            padding: 12px 35px;
+            font-size: 1.2rem;
+            color: #fff;
+            background: linear-gradient(45deg, var(--primary-blue), var(--secondary-blue));
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn-enter:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(0, 210, 255, 0.8);
+        }
+
+        /* Main Content */
+        #main-content {
+            display: none;
+            opacity: 0;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            transition: opacity 0.8s ease;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            color: var(--secondary-blue);
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
+        }
+
+        .container-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            width: 100%;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 210, 255, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .card h2 {
+            color: var(--secondary-blue);
+            border-bottom: 2px solid var(--primary-blue);
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .card ul {
+            list-style: none;
+        }
+
+        .card ul li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .card ul li::before {
+            content: "✓";
+            color: var(--secondary-blue);
+            position: absolute;
+            left: 0;
+        }
+
+        .payment-img {
+            width: 100%;
+            max-width: 320px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border: 2px solid var(--primary-blue);
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .account-details {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .highlight-text {
+            color: #ff4d4d;
+            font-weight: 600;
+        }
+
+        .btn-facebook {
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+            padding: 12px;
+            background-color: #1877f2;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+
+        .btn-facebook:hover {
+            background-color: #145dbf;
+        }
+
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="svg-container"></div>
+
+    <!-- Splash Screen -->
+    <div id="splash-screen">
+        <h1 class="splash-title">Nongkiw Shop</h1>
+        <p class="splash-subtitle">ยินดีให้บริการดันแรงค์ 4v4 งานไว งานเร็ว</p>
+        <button class="btn-enter" onclick="enterShop()">เข้าสู่เว็บไซต์</button>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <header>
+            <h1>Nongkiw Store</h1>
+            <p>ยินดีให้บริการลูกค้าทุกคนครับ</p>
+        </header>
+
+        <div class="container-grid">
+            <!-- บริการของเรา -->
+            <div class="card">
+                <h2>รายละเอียดบริการ</h2>
+                <ul>
+                    <li>รับดันแรงค์ 4v4</li>
+                    <li>งานไว งานเร็ว มีสตรีม แชร์จอให้ดูได้</li>
+                    <li>ราคาสามารถทักมาคุยก่อนได้</li>
+                    <li>ระยะเวลาการรองาน ช้าเร็วขึ้นอยู่กับคิวในช่วงนั้น</li>
+                </ul>
+            </div>
+
+            <!-- วิธีการสั่งซื้อ -->
+            <div class="card">
+                <h2>How to Order</h2>
+                <ol style="padding-left: 20px; line-height: 1.8;">
+                    <li>ทักมาแจ้งรายละเอียดที่ต้องการ</li>
+                    <li>ร้านจะแจ้งราคา</li>
+                    <li>โอนก่อนเริ่มงานเท่านั้น <span class="highlight-text">(ไม่มีคืนเงิน)</span></li>
+                </ol>
+                <a href="https://www.facebook.com/profile.php?id=61594785118393" target="_blank" class="btn-facebook">
+                    ทักแชท Facebook ร้าน
+                </a>
+            </div>
+
+            <!-- การชำระเงิน -->
+            <div class="card" style="grid-column: 1 / -1;">
+                <h2>ช่องทางการชำระเงิน</h2>
+                <p class="highlight-text">⚠️ มีบัญชีเดียวเท่านั้น กรุณาเช็คให้ดีก่อนโอนเงิน</p>
+                
+                <div class="account-details">
+                    <p><strong>กสิกรไทย (KBANK):</strong> 206-1-32878-8</p>
+                    <p><strong>TrueMoney Wallet:</strong> 083-421-4076</p>
+                </div>
+
+                <!-- รูปบัญชีชำระเงิน -->
+                <img src="payment.png" alt="ช่องทางการชำระเงิน payment.png" class="payment-img">
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; Nongkiw Shop - All Rights Reserved</p>
+        </footer>
+    </div>
+
+    <script>
+        function createFloatingSVGs() {
+            const container = document.getElementById('svg-container');
+            const svgNS = "http://www.w3.org/2000/svg";
+            
+            for (let i = 0; i < 15; i++) {
+                const span = document.createElement('span');
+                span.className = 'floating-svg';
+                
+                const svg = document.createElementNS(svgNS, "svg");
+                svg.setAttribute("width", "30");
+                svg.setAttribute("height", "30");
+                svg.setAttribute("viewBox", "0 0 24 24");
+                svg.setAttribute("fill", "#00d2ff");
+                
+                const path = document.createElementNS(svgNS, "path");
+                path.setAttribute("d", "M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z");
+                
+                svg.appendChild(path);
+                span.appendChild(svg);
+                
+                span.style.left = Math.random() * 100 + 'vw';
+                span.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                span.style.animationDelay = (Math.random() * 5) + 's';
+                
+                container.appendChild(span);
+            }
+        }
+
+        function enterShop() {
+            const splash = document.getElementById('splash-screen');
+            const main = document.getElementById('main-content');
+            splash.style.opacity = '0';
+            setTimeout(() => {
+                splash.style.display = 'none';
+                main.style.display = 'flex';
+                void main.offsetWidth;
+                main.style.opacity = '1';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 800);
+        }
+
+        // Initialize SVGs on load
+        window.onload = createFloatingSVGs;
+    </script>
+</body>
+</html>
